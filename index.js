@@ -25,3 +25,5 @@ for (let i = 0; i < words.length; i++) {
     }
   }
 }
+
+throw new Error('matching seed not found');
