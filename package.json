@@ -1,0 +1,11 @@
+{
+  "name": "seed-phrase-brute-force",
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "Nick Barry",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "ethers": "^6.13.2"
+  }
+}
