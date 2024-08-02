@@ -7,19 +7,21 @@ const phrase = process.env.SEED_PHRASE;
 const target = getAddress(process.env.TARGET);
 
 for (let i = 0; i < words.length; i++) {
-  const fullPhrase = `${ phrase } ${ words[i] }`;
+  for (let j = 0; j < words.length; j++) {
+    const fullPhrase = `${ phrase } ${ words[i] } ${ words[j] }`;
 
-  let address;
+    let address;
 
-  try {
-    ({ address } = Wallet.fromPhrase(fullPhrase));
-  } catch (e) {
-    // probably invalid checksum
-    continue;
-  }
+    try {
+      ({ address } = Wallet.fromPhrase(fullPhrase));
+    } catch (e) {
+      // probably invalid checksum
+      continue;
+    }
 
-  if (Wallet.fromPhrase(fullPhrase).address === target) {
-    console.log(fullPhrase);
-    process.exit(0);
+    if (Wallet.fromPhrase(fullPhrase).address === target) {
+      console.log(fullPhrase);
+      process.exit(0);
+    }
   }
 }
