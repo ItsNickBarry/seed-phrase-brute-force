@@ -2,27 +2,37 @@ const { Wallet, getAddress } = require('ethers');
 const fs = require('fs');
 
 const words = String(fs.readFileSync('./english.txt')).split('\n');
+const placeholder = /\bx\b/;
 
 const phrase = process.env.SEED_PHRASE;
 const target = getAddress(process.env.TARGET);
 
-for (let i = 0; i < words.length; i++) {
-  for (let j = 0; j < words.length; j++) {
-    const fullPhrase = `${ phrase } ${ words[i] } ${ words[j] }`;
+if (phrase.split(' ').length !== 12) {
+  throw new Error('incorrect seed phrase length');
+}
 
-    let address;
+const count = phrase.split(' ').reduce((acc, el) => acc + (el.match(placeholder) ? 1 : 0), 0);
 
-    try {
-      ({ address } = Wallet.fromPhrase(fullPhrase));
-    } catch (e) {
-      // probably invalid checksum
-      continue;
-    }
+for (let i = 0n; i < BigInt(words.length) ** BigInt(count); i++) {
+  let testPhrase = phrase;
 
-    if (Wallet.fromPhrase(fullPhrase).address === target) {
-      console.log(fullPhrase);
-      process.exit(0);
-    }
+  for (let j = 0; j < count; j++) {
+    const index = i / (BigInt(words.length) ** BigInt(j)) % BigInt(words.length);
+    testPhrase = testPhrase.replace(placeholder, words[index]);
+  }
+
+  let address;
+
+  try {
+    ({ address } = Wallet.fromPhrase(testPhrase));
+  } catch (e) {
+    // probably invalid checksum
+    continue;
+  }
+
+  if (Wallet.fromPhrase(testPhrase).address === target) {
+    console.log(testPhrase);
+    process.exit(0);
   }
 }
 
