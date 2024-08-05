@@ -30,7 +30,7 @@ for (let i = 0n; i < BigInt(words.length) ** BigInt(count); i++) {
     continue;
   }
 
-  if (Wallet.fromPhrase(testPhrase).address === target) {
+  if (address === target) {
     console.log(testPhrase);
     process.exit(0);
   }
