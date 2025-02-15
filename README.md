@@ -7,7 +7,8 @@ Fill in missing seed phrase words via brute-force search.
 Store your seed phrase as an environment variable, with missing words represented as `"x"`:
 
 ```bash
-export SEED_PHRASE="test test test test test test test test test test x"
+# first word of seed phrase is missing
+export SEED_PHRASE="x test test test test test test test test test test"
 ```
 
 Store the address of the first account associated with the seed phrase as an environment variable:
